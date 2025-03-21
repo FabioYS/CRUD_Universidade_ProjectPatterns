@@ -1,4 +1,4 @@
-package com.projectpatterns.crud;
+package com.projectpatterns.crud.model;
 
 import jakarta.persistence.*;
 import lombok.*;

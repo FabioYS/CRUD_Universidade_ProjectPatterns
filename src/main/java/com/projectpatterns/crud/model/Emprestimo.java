@@ -1,6 +1,4 @@
-package com.projectpatterns.crud;
-
-package com.example.demo.model;
+package com.projectpatterns.crud.model; // Apenas um package correto
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,29 +7,27 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "emprestimo")
-@Getter
-@Setter
-@Data
+@Data // Inclui Getter, Setter, toString, equals, e hashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Aluno{
+public class Emprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @MayToOne
+    @ManyToOne // Corrigido: era @MayToOne
     @JoinColumn(name = "aluno_id", nullable = false)
     private Aluno aluno;
 
-    @MayToOne
+    @ManyToOne // Corrigido: era @MayToOne
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
     @Column(nullable = false)
-    private LocalDate data_emprestimo;
+    private LocalDate dataEmprestimo; // Corrigido: era data_emprestimo
 
     @Column(nullable = false)
-    private LocalDate data_devolucao;
+    private LocalDate dataDevolucao; // Corrigido: era data_devolucao
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

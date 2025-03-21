@@ -1,4 +1,4 @@
-package com.projectpatterns.crud;
+package com.projectpatterns.crud.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,9 +27,9 @@ public class Aluno{
     private String matricula;
 
     @Column(nullable = false)
-    private email;
+    private String email;
 
-    private telefone;
+    private String telefone;
 
     @Column(nullable = false)
     private LocalDate dataNascimento;
@@ -38,7 +38,7 @@ public class Aluno{
     @Column(nullable = false)
     private StatusAluno status;
 
-    @MayToOne
+    @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 }

@@ -1,19 +1,23 @@
 package com.projectpatterns.crud.service;
 
 import com.projectpatterns.crud.model.Aluno;
+import com.projectpatterns.crud.model.Curso;
+import com.projectpatterns.crud.model.enums.StatusAluno;
 import com.projectpatterns.crud.repository.AlunoRepository;
+import com.projectpatterns.crud.repository.CursoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
+    private final CursoRepository cursoRepository;
 
-    public AlunoService(AlunoRepository alunoRepository) {
+    public AlunoService(AlunoRepository alunoRepository, CursoRepository cursoRepository) {
         this.alunoRepository = alunoRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     // Listar todos os alunos
@@ -27,15 +31,25 @@ public class AlunoService {
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado com CPF: " + cpf));
     }
 
-    // Criar um novo aluno
-    public Aluno registrar(Aluno aluno) {
+    // Criar um novo aluno e associá-lo a um curso
+    public Aluno cadastrar(Aluno aluno, Long idCurso) {
+        Curso curso = cursoRepository.findById(idCurso)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com ID: " + idCurso));
+
+        aluno.setCurso(curso);
         return alunoRepository.save(aluno);
     }
 
-    // Atualizar aluno
-    public Aluno atualizar(String cpf, Aluno alunoAtualizado) {
+    // Atualizar aluno (dados básicos + curso, se informado)
+    public Aluno atualizar(String cpf, Aluno alunoAtualizado, Long idCurso) {
         Aluno aluno = alunoRepository.findByCpf(cpf)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado com CPF: " + cpf));
+
+        if (idCurso != null) {
+            Curso curso = cursoRepository.findById(idCurso)
+                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com ID: " + idCurso));
+            aluno.setCurso(curso);
+        }
 
         aluno.setNome(alunoAtualizado.getNome());
         aluno.setEmail(alunoAtualizado.getEmail());
@@ -44,10 +58,21 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
+    // Atualizar status do aluno
+    public Aluno atualizarStatus(String cpf, StatusAluno novoStatus) {
+        Aluno aluno = alunoRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado com CPF: " + cpf));
+
+        aluno.setStatus(novoStatus);
+        return alunoRepository.save(aluno);
+    }
+
     // Remover aluno
     public void deletar(String cpf) {
-        alunoRepository.findByCpf(cpf)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado com o CPF: " + cpf));
+        Aluno aluno = alunoRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado com CPF: " + cpf));
+
         alunoRepository.delete(aluno);
-    }
+}
+
 }

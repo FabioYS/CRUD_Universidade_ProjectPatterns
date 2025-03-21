@@ -1,4 +1,4 @@
-package com.projectpatterns.crud;
+package com.projectpatterns.crud.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Curso {
+public class Livro {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -1,4 +1,4 @@
-package com.ProjectPatterns.CRUD_Universidade_ProjectPatterns;
+package com.prokectpatterns.crud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
